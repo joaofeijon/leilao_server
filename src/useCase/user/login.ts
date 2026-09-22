@@ -5,17 +5,22 @@ import { invalidPassword } from '../errors/invalid-password';
 import { invalidEmail } from '../errors/invalid-email';
 import { shortPassword } from '../errors/short-password';
 import { userNotFound } from '../errors/user-not-found';
-import type { User } from "@prisma/client";
+import jwt from 'jsonwebtoken';
+import { env } from "@/env";
 
-interface IFindyByEmail {
+interface ILogin {
   email: string;
   password: string;
 }
 
-export class FindyByEmail {
-  constructor(private userRepository: UserRepository) {}
+interface IResponseLogin {
+  token: string;
+}
 
-  async execute({email, password}: IFindyByEmail): Promise<User> {
+export class Login {
+  constructor(private userRepository: UserRepository) { }
+
+  async execute({ email, password }: ILogin): Promise<IResponseLogin> {
     if (!z.string().email().safeParse(email).success) {
       throw new invalidEmail()
     }
@@ -36,6 +41,8 @@ export class FindyByEmail {
       throw new invalidPassword()
     }
 
-    return user
+    const token: string = jwt.sign({ id: user.id }, env.JWT_SECRET, { expiresIn: "1d" })
+
+    return { token }
   }
 }

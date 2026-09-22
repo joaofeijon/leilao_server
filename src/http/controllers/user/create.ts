@@ -10,7 +10,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 		password: z.string().min(6),
 		passwordConfirmation: z.string().min(6),
 	})
-	
+
 	const { name, email, password, passwordConfirmation } = createUserSchema.parse(request.body)
 
 	const userRepositoryPrisma = new UserRepositoryPrisma()
@@ -18,7 +18,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
 	const { message } = await createUser.execute({ name, email, password, passwordConfirmation })
 
-	return reply.status(200).send({
+	return reply.status(201).send({
 		message
 	})
 }

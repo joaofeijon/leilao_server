@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { hash } from "bcryptjs";
-import { FindyByEmail } from "@/useCase/user/findyByEmail";
+import { Login } from "@/useCase/user/login";
 import { UserRepositoryInMemory } from "@/repositories/in-memory/user-repository-in-memory";
 import { invalidPassword } from "@/useCase/errors/invalid-password";
 import { invalidEmail } from "@/useCase/errors/invalid-email";
@@ -8,12 +8,12 @@ import { shortPassword } from "@/useCase/errors/short-password";
 import { userNotFound } from "@/useCase/errors/user-not-found";
 
 let userRepository: UserRepositoryInMemory;
-let findByEmail: FindyByEmail;
+let findByEmail: Login;
 
 describe("FindyByEmail (login) use case", () => {
   beforeEach(async () => {
     userRepository = new UserRepositoryInMemory();
-    findByEmail = new FindyByEmail(userRepository);
+    findByEmail = new Login(userRepository);
 
     await userRepository.createUser({
       name: "Joao",
