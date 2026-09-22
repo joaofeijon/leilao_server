@@ -1,4 +1,3 @@
-import { z } from "zod"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { CheckHealthSystem } from "@/useCase/heatlh/checkHealthSystem"
 

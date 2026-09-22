@@ -4,10 +4,15 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc && tsc-alias",
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run test/unit",
+    "test:watch": "vitest test/unit",
+    "test:e2e": "vitest run test/e2e",
+    "test:e2e:watch": "vitest test/e2e",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -21,10 +26,16 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^22.5.5",
+    "@types/supertest": "^7.2.1",
+    "eslint": "^10.11.0",
     "prisma": "^5.20.0",
+    "supertest": "^7.2.2",
     "tsc-alias": "^1.9.5",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.1"
   }
 }
