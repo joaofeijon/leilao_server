@@ -2,8 +2,9 @@
 
 services:
   app:
-    build: .
-    command: npm run dev
+    build:
+      context: .
+      target: dev
     ports:
       - "3000:3000"
     env_file:
@@ -27,7 +28,7 @@ services:
       POSTGRES_PASSWORD: leilao
       POSTGRES_DB: leilao
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
