@@ -16,3 +16,9 @@ body:json {
     "password": "123456"
   }
 }
+
+script:post-response {
+  if (res.status === 200) {
+    bru.setVar("token", res.body.token);
+  }
+}

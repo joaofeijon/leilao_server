@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { hash } from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { Login } from "@/useCase/user/login";
 import { UserRepositoryInMemory } from "@/repositories/in-memory/user-repository-in-memory";
 import { invalidPassword } from "@/useCase/errors/invalid-password";
@@ -23,12 +24,14 @@ describe("FindyByEmail (login) use case", () => {
   });
 
   it("authenticates with a valid email and password", async () => {
-    const user = await findByEmail.execute({
+    const { token } = await findByEmail.execute({
       email: "joao@example.com",
       password: "123456",
     });
 
-    expect(user.email).toBe("joao@example.com");
+    const payload = jwt.decode(token) as { id: string };
+
+    expect(payload.id).toBe(userRepository.items[0].id);
   });
 
   it("rejects when the email does not exist", async () => {

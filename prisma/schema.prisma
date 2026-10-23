@@ -8,10 +8,49 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  email    String @unique
+  email    String  @unique
   password String
+  wallet   Wallet?
+  bids     Bid[]
 
   @@map("users")
+}
+
+model Product {
+  id           String   @id @default(uuid())
+  title        String
+  name         String
+  description  String
+  // valor em centavos
+  initialValue Int      @map("initial_value")
+  createdAt    DateTime @default(now()) @map("created_at")
+  bids         Bid[]
+
+  @@map("products")
+}
+
+model Wallet {
+  id      String @id @default(uuid())
+  userId  String @unique @map("user_id")
+  // saldo em centavos
+  balance Int    @default(0)
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@map("wallets")
+}
+
+model Bid {
+  id        String   @id @default(uuid())
+  productId String   @map("product_id")
+  userId    String   @map("user_id")
+  // valor em centavos
+  amount    Int
+  createdAt DateTime @default(now()) @map("created_at")
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([productId, amount])
+  @@map("bids")
 }
